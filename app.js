@@ -35,7 +35,7 @@ window.addEventListener("keydown", (e) => {
 }, { passive: false })
 
 line.addEventListener("keydown", (e) => {
-  if (e.key == "Enter" && (e.ctrlKey || e.altKey)) {
+  if (e.key == "Enter") {
     e.preventDefault()
     onSend()
   }
@@ -87,7 +87,7 @@ function postLine(line) {
     reqMsgs.push(messages[0])
     reqMsgs.push(...messages.slice(messages.length - 7, messages.length))
   }
-  if (config.model === "gpt-3.5-turbo") {
+  if (config.model === "gpt-4") {
     chat(reqMsgs)
   } else {
     completions(reqMsgs)
@@ -103,7 +103,7 @@ function chat(reqMsgs) {
     _message = [reqMsgs[0], reqMsgs[reqMsgs.length - 1]]
   }
   send(`${config.domain}/v1/chat/completions`, {
-    "model": "gpt-3.5-turbo",
+    "model": "gpt-4",
     "messages": _message,
     "max_tokens": config.maxTokens,
     "stream": config.stream,
@@ -334,7 +334,7 @@ function showSettings(ok = true) {
 }
 
 function setSettingInput(config) {
-  domainInput.placeholder = "https://api.openai.com"
+  domainInput.placeholder = "https://ai.ift.lat"
   maxTokensInput.placeholder = config.maxTokens
   systemPromptInput.placeholder = "You are a helpful assistant."
   temperatureInput.placeholder = config.temperature
@@ -357,7 +357,7 @@ function setSettingInput(config) {
     temperatureInput.value = config.temperature
   }
   if (!config.model) {
-    config.model = "gpt-3.5-turbo"
+    config.model = "gpt-4"
   }
   modelInput.value = config.model
   if (!config.firstPrompt) {
@@ -480,7 +480,7 @@ const textToSpeech = async (text, options = {}) => {
   }
 
   // Detect language using franc library
-  const { franc } = await import("https://cdn.jsdelivr.net/npm/franc@6.1.0/+esm");
+  const { franc } = await import("https://fastly.jsdelivr.net/npm/franc@6.1.0/+esm");
   let lang = franc(text);
   if (lang === "" || lang === "und") {
     lang = navigator.language
